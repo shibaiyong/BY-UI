@@ -1,0 +1,91 @@
+body, div, ul, ol, dl, dt, dd, li, dl, h1, h2, h3, h4
+{margin:0;padding:0;font-style:normal;font:12px;} 
+ 
+ol, ul ,li{list-style: none;} 
+img {border: 0; vertical-align:middle;} 
+body,html{color:#000000;background:#e4ecfd;height:100%;} 
+.clear{clear:both;height:1px;width:100%; overflow:hidden; margin-top:-1px;} 
+a,a:hover{color:#000000;text-decoration:none !important;} 
+a:hover{text-decoration:none !important;}
+
+.clearfixed::after{
+    display:block; content:" "; height:0; clear:both; overflow:hidden; visibility:hidden;
+}
+
+.error-tip{
+    color:red;
+    font-size: 12px;
+    font-weight: normal;
+    display: inline-block;
+    height: 12px;
+}
+
+input::-webkit-input-placeholder{
+  color: #9ba9c6;
+}
+
+input::-moz-placeholder{
+  color: #9ba9c6;
+}
+
+input:-ms-input-placeholder {
+  color: #9ba9c6;
+}
+
+/* 点击a标签消除底色阴影 */
+
+a:active{
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-tap-highlight-color: transparent;
+	outline:none; 
+	background: none;
+	text-decoration: none;
+}
+.mint-header{
+    background:white;
+}
+.mint-header .mint-header-title{
+    color:black;
+    font-size: 0.18rem;
+}
+.mint-header .mintui-back{
+    color:black;
+    font-size: 0.18rem
+}
+
+.home .swiper-slide{
+    font-size: 0.12rem
+}
+
+.home .notice .swiper-slide{
+  line-height: 40px;
+}
+.goIntoDet .mintui-back{
+
+  font-size: 0.14rem
+}
+
+.mint-header .mint-button-text{
+  color:black;
+}
+
+.mint-navbar .mint-tab-item.is-selected{
+  border-bottom: 3px solid #3965ff;
+  color: #3965ff;
+  margin-bottom: -3px;
+}
+
+.mint-tab-item-label{
+  font-size:0.16rem;
+}
+
+.mui-input-group::before{
+  height:0;
+}
+.mui-input-group::after{
+  height:0;
+}
+
+.mytip .mint-popup{
+  width:100%;
+}

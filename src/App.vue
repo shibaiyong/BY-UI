@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="outer">
-    <div class="inner" v-dropload="options">
+    <div class="inner">
       <img src="./assets/logo.png">
       <table>
       <tr v-for="item in datas" :key="item.id">
@@ -11,6 +11,8 @@
         <td>{{item.title}}</td>
       </tr>
     </table>
+
+    <by-checkbox/>
     </div>
     </div>
   </div>
@@ -18,6 +20,8 @@
 
 <script>
 import {getList} from './requestDataInterface'
+
+
 export default {
   name: "App",
   data() {

@@ -11,8 +11,6 @@
         <td>{{item.title}}</td>
       </tr>
     </table>
-
-    <by-checkbox/>
     </div>
     </div>
   </div>
@@ -30,10 +28,24 @@ export default {
       options: {
         loadDownFn: true,
         loadUpFn: true
-      }
+      },
     };
   },
-  created() {},
+  created() {
+
+  },
+  mounted(){
+    this.$showdialog({
+          title: "我是标题",
+          cancel: "",
+          confirm: "确定",
+          content: "用户名和密码不能为空",
+          confirmCallback: (vm) => {
+            console.log('haha')
+            vm.visible = false
+          }
+        },true)
+  },
   methods: {
     loadUpFn(me) {
       getList().then(res => {

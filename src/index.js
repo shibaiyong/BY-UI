@@ -3,9 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import '@/assets/css/dropload.css'
-import Api from '@/assets/utils/api.js'
+import Api from '@/utils/api.js'
 
 import ByCheckbox from '@/components/checkbox'
+import ByDialog from '@/components/dialog'
+
 
 let by_component = [
   ByCheckbox
@@ -19,6 +21,9 @@ const install = (Vue, opt={}) => {
   })
 
   Vue.use(Api)
+
+  Vue.prototype.$showdialog = ByDialog
+
 }
 
 export default { install, ByCheckbox }

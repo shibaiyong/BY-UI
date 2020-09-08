@@ -8,13 +8,19 @@ import Api from '@/utils/api.js'
 
 import App from './App'
 import ByCheckbox from '@/components/checkbox'
+import ByGestureLock from '@/components/gesturelock'
 import ByDialog from '@/components/dialog'
 
-if (typeof window !== 'undefined' && window.Vue) {
-  console.log('window.vue')
-}
+let by_component = [
+  ByCheckbox,
+  ByGestureLock
+]
+by_component.forEach( component => {
+  Vue.use(component)
+})
 
 Vue.use(Api)
+
 Vue.prototype.$showdialog = ByDialog
 
 new Vue({

@@ -6,11 +6,13 @@ import '@/assets/css/dropload.css'
 import Api from '@/utils/api.js'
 
 import ByCheckbox from '@/components/checkbox'
+import ByGestureLock from '@/components/gesturelock'
 import ByDialog from '@/components/dialog'
 
 
 let by_component = [
-  ByCheckbox
+  ByCheckbox,
+  ByGestureLock
 ]
 
 
@@ -26,5 +28,5 @@ const install = (Vue, opt={}) => {
 
 }
 
-export default { install, ByCheckbox }
+export default { install, ByCheckbox, ByGestureLock}
 

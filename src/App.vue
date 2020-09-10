@@ -29,8 +29,15 @@ export default {
       height: 300,
       canvasLockType: 3,
       selectNum: 4,
-      inputCallback: function(vm) {
-        alert("请再次输入");
+      inputCallback: function(code, vm) {
+
+        if(code == 1){
+          alert("请再次输入");
+        }else{
+          alert("请输入三个以上的点");
+        }
+        vm.resetCircles();
+        
       },
       comfirmCallback: function(code, vm) {
         if (code == 1) {
@@ -43,7 +50,11 @@ export default {
         alert("解锁成功");
       },
       unlockFail: function(vm) {
-        alert("解锁失败");
+        setTimeout(function(){
+          alert("解锁失败");
+          
+          vm.resetCircles();
+        },1000)
       }
     };
     return {

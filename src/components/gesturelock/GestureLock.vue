@@ -17,7 +17,8 @@ export default {
       height: this.opts.height || 300,
       width: this.opts.width || 300,
       canvasLockType: this.opts.canvasLockType || 3,
-      selectNum: this.opts.selectNum || 4
+      selectNum: this.opts.selectNum || 4,
+      touchFlag:true
     };
   },
   methods: {
@@ -39,18 +40,18 @@ export default {
         //数据重置
         self.lastLocate = [];
         //引用类型的数据，注意使用的时候深拷贝一份
-        self.restLocate = self.circleLocate.slice();
+        self.copyRestLocate = JSON.parse(JSON.stringify(self.restLocate));
 
         var position = self.getPosition(e);
 
-        for (var i = 0; i < self.restLocate.length; i++) {
-          var item = self.restLocate[i];
+        for (var i in self.copyRestLocate) {
+          var item = self.copyRestLocate[i];
           if (
             Math.abs(item.x - position.x) < self.r &&
             Math.abs(item.y - position.y) < self.r
           ) {
-            self.touchFlag = true;
-            self.lastLocate.push(self.restLocate.splice(i, 1)[0]);
+            self.lastLocate.push(self.copyRestLocate[i]);
+            delete self.copyRestLocate[i]
             break;
           }
         }
@@ -62,6 +63,7 @@ export default {
       });
       this.canvas.addEventListener("touchend", function(e) {
         //清空画布 ,重画9个圆
+        self.touchFlag = false;
         self.checkGesture(opts);
       });
     },
@@ -75,13 +77,21 @@ export default {
       //1.检测手势移动的位置是否处于下一圆的圆内。
       //2.圆内的话则画实心圆 drawPoint
       //3.已经画过实心圆的圆，无需重复检测
-      for (var i = 0; i < this.restLocate.length; i++) {
+      for(var i in this.copyRestLocate){
         if (
-          Math.abs(po.x - this.restLocate[i].x) < this.r &&
-          Math.abs(po.y - this.restLocate[i].y) < this.r
+          Math.abs(po.x - this.copyRestLocate[i].x) < this.r &&
+          Math.abs(po.y - this.copyRestLocate[i].y) < this.r
         ) {
-          this.lastLocate.push(this.restLocate[i]);
-          this.restLocate.splice(i, 1); //画完一个圆就将该圆从restPoint数组中去掉
+          var lastitem = this.lastLocate.slice(-1)[0];
+          var abs_px = Math.abs(lastitem.px-this.copyRestLocate[i].px);
+          var abs_py = Math.abs(lastitem.py-this.copyRestLocate[i].py);
+          if(abs_px>=2 || abs_py>=2){
+            var ind = (lastitem.py+this.copyRestLocate[i].py) / 2 * 3 + (lastitem.px+this.copyRestLocate[i].px) / 2 * 1;
+            this.lastLocate.push(this.copyRestLocate[ind]);
+            delete this.copyRestLocate[ind];
+          }
+          this.lastLocate.push(this.copyRestLocate[i]);
+          delete this.copyRestLocate[i];//画完一个圆就将该圆从restPoint数组中去掉
           break;
         }
       }
@@ -139,15 +149,20 @@ export default {
       var n = this.canvasLockType;
       this.r = this.width / (2 * n + 1) / 2;
       var count = 0;
+      var password = 0;
       this.circleLocate = [];
+      this.restLocate = {};
       for (var i = 0; i < n; i++) {
         for (var j = 0; j < n; j++) {
           var obj = {
             x: 3 * this.r + 4 * this.r * j,
             y: 3 * this.r + 4 * this.r * i,
-            ind: count++
+            ind:password++,
+            px:j,
+            py:i
           };
           this.circleLocate.push(obj);
+          this.restLocate[count++]=obj;
         }
       }
 
@@ -159,6 +174,7 @@ export default {
         var item = this.circleLocate[k];
         this.drawCircle(item.x, item.y);
       }
+      this.touchFlag = true;
     },
     checkGesture(opts) {
       var password = "";
@@ -168,35 +184,30 @@ export default {
       }
 
       if (password.length < opts.selectNum) {
-        this.resetCircles();
+        opts.inputCallback(0,this)
         return false;
       }
 
       if (!unlockPassword) {
         if (!localStorage.password) {
           localStorage.password = password;
-          this.resetCircles();
-          opts.inputCallback(this);
+          opts.inputCallback(1,this);
         } else if (localStorage.password == password) {
           localStorage.unlockPassword = password;
-          this.resetCircles();
           this.drawPoint("green");
           this.drawLine(null, "green");
           opts.comfirmCallback(1, this);
         } else {
           localStorage.removeItem("password");
-          this.resetCircles();
           this.drawPoint("red");
           this.drawLine(null, "red");
           opts.comfirmCallback(0, this);
         }
       } else if (unlockPassword == password) {
-        this.resetCircles();
         this.drawPoint("green");
         this.drawLine(null, "green");
         opts.unlockSucc(this);
       } else if (unlockPassword != password) {
-        this.resetCircles();
         this.drawPoint("red");
         this.drawLine(null, "red");
         opts.unlockFail(this);
@@ -223,7 +234,7 @@ export default {
 
 .gesturecontent canvas {
   display: block;
-  background: gray;
+  background: white;
   margin: 0 auto;
 }
 </style>

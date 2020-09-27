@@ -6,6 +6,8 @@ import '@/assets/css/common.css'
 import '@/assets/css/dropload.css'
 import Api from '@/utils/api.js'
 
+import router from '@/router'
+
 import App from './App'
 import ByCheckbox from '@/components/checkbox'
 import ByGestureLock from '@/components/gesturelock'
@@ -27,5 +29,5 @@ new Vue({
   el: '#app',
   components: { App },
   template: '<App/>',
-  
+  router
 })

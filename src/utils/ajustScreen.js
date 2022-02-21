@@ -43,5 +43,5 @@
     //document.addEventListener('DOMContentLoaded', self.changePage, false);
     window.addEventListener('load', self.changePage, false);
   
-  })(document,375);
+  })(document,750);
   

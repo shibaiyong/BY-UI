@@ -5,19 +5,22 @@
       <img src="./assets/logo.png">
       <input type="tel" maxlength="6" ref="tel" v-model="code"/>
       <span @click="linkto">跳转</span>
-      <by-gesturelock :opts="this.opts"/>
+      <!-- <by-gesturelock :opts="this.opts"/> -->
       <by-checkbox></by-checkbox>
-      <table>
-      <tr v-for="item in datas" :key="item.id">
-        <td>{{item.link}}</td>
-        <td>{{item.pic}}</td>
-        <td>{{item.date}}</td>
-        <td>{{item.title}}</td>
-      </tr>
-    </table>
+      <!-- <table>
+        <tr v-for="item in datas" :key="item.id">
+          <td>{{item.link}}</td>
+          <td>{{item.pic}}</td>
+          
+          <td>{{item.date}}</td>
+          <td>{{item.title}}</td>
+        </tr>
+      </table> -->
     
     </div>
     </div>
+    <by-picker v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker>
+
   </div>
 </template>
 
@@ -27,20 +30,18 @@ import { getList } from "./requestDataInterface";
 export default {
   name: "Test",
   data() {
-    this.opts={
+    this.opts = {
       width: 300,
       height: 300,
       canvasLockType: 3,
       selectNum: 4,
       inputCallback: function(code, vm) {
-
-        if(code == 1){
+        if (code == 1) {
           alert("请再次输入");
-        }else{
+        } else {
           alert("请输入三个以上的点");
         }
         vm.resetCircles();
-        
       },
       comfirmCallback: function(code, vm) {
         if (code == 1) {
@@ -53,11 +54,11 @@ export default {
         alert("解锁成功");
       },
       unlockFail: function(vm) {
-        setTimeout(function(){
+        setTimeout(function() {
           alert("解锁失败");
-          
+
           vm.resetCircles();
-        },1000)
+        }, 1000);
       }
     };
     return {
@@ -66,17 +67,35 @@ export default {
         loadDownFn: true,
         loadUpFn: true
       },
-      code:0
+      code: 0,
+      dateRange:'今年累计',
+      pickerShow:false,
+      pickerdatas:[],
+      autoReceiveVal:{}
     };
   },
   created() {},
   mounted() {
-    console.log(this.$refs.tel)
-    setTimeout(()=>{
-
+    setTimeout(() => {
       this.$refs.tel.blur();
-      
-    },3000)
+
+
+      this.pickerdatas = [
+
+        {
+          defaultvalue:'1',
+          keyName: 'name',
+          keyInd:1,
+          cloumndatas: [
+            {id:1,name:'今年月度'},
+            {id:2,name:'今年累计'},
+            {id:3,name:'以往年度'}
+          ]
+        }
+
+      ]
+
+    }, 1000);
     // this.$showdialog(
     //   {
     //     title: "我是标题",
@@ -91,13 +110,10 @@ export default {
     // );
   },
   methods: {
-    linkto(){
+    linkto() {
 
-      this.$refs.tel.focusout();
-      getList().then(res => {
-        this.datas = res.lists;
-      });
-
+      this.pickerShow=true
+      
     },
     loadUpFn(me) {
       getList().then(res => {
@@ -112,11 +128,59 @@ export default {
           me.resetload();
         }, 1000);
       });
+    },
+    pickerConfirm(val){
+
+      console.log(val)
+
+    },
+
+    pickerCancel(){
+      this.pickerShow = false
     }
+  },
+
+  watch:{
+
+    autoReceiveVal(newVal){
+      let flag = newVal && newVal.length;
+
+      if(flag && newVal[0].name == '今年月度'){
+        this.pickerdatas.splice(1,1,{
+          defaultvalue:'1',
+          keyName: 'name',
+          keyInd:2,
+          cloumndatas: [
+            {id:1,name:'1月'},
+            {id:2,name:'2月'},
+            {id:3,name:'3月'}
+          ]
+        })
+      }else if(flag && newVal[0].name == '以往年度'){
+
+        this.pickerdatas.splice(1,1,{
+          defaultvalue:'2',
+          keyName: 'name',
+          keyInd:3,
+          cloumndatas: [
+            {id:1,name:'2021'},
+            {id:2,name:'2019'},
+            {id:3,name:'2018'},
+            {id:4,name:'2017'}
+          ]
+        })
+
+      }else{
+
+        this.pickerdatas.splice(1,1)
+
+      }
+
+    }
+
   }
 };
 </script>
 
 <style>
-
 </style>

@@ -8,6 +8,8 @@ export const CreateDropLoad = (function(){
         return new MyDropLoad(ele,options,vnode);
     };
     var MyDropLoad = function(element, options, vnode){
+        //不能使用箭头函数，否则this是undefined
+        //面向对象方法开发，原型方法也不能是箭头函数
         var me = this;
         me.vnode = vnode;
         me.$element = element;

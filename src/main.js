@@ -5,6 +5,7 @@ import Vue from 'vue'
 import '@/assets/css/common.css'
 import '@/assets/css/dropload.css'
 import Api from '@/utils/api.js'
+import '@/utils/ajustScreen.js'
 
 import router from '@/router'
 
@@ -12,10 +13,12 @@ import App from './App'
 import ByCheckbox from '@/components/checkbox'
 import ByGestureLock from '@/components/gesturelock'
 import ByDialog from '@/components/dialog'
+import ByPicker from '@/components/picker'
 
 let by_component = [
   ByCheckbox,
-  ByGestureLock
+  ByGestureLock,
+  ByPicker
 ]
 by_component.forEach( component => {
   Vue.use(component)

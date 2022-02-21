@@ -1,6 +1,6 @@
 {
   "name": "byshiui",
-  "version": "1.2.4",
+  "version": "1.2.7",
   "description": "public component base on vue",
   "author": "shibaiyong",
   "main": "dist/index.js",

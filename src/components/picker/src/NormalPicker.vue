@@ -48,18 +48,14 @@ export default {
     };
   },
   created() {
-    this.dataslen =
-      this.cloumndatas instanceof Array ? this.cloumndatas.length : 0;
-      console.log(this.cloumndatas)
+
+    this.dataslen = this.cloumndatas instanceof Array ? this.cloumndatas.length : 0;
   },
   updated() {},
   methods: {
     findByDefault() {
-      this.$emit(
-        "isselected",
-        this.cloumn,
-        this.cloumndatas[this.selectedInd - 1]
-      );
+
+      this.$emit("isselected", this.cloumn, this.cloumndatas[this.selectedInd - 1]);
     },
     touchstart(e) {
       let locations = e.targetTouches[0];
@@ -78,35 +74,33 @@ export default {
       this.moveIndex = Math.round(Math.abs(this.distance) / 42);
 
       //手势移动的方向
-
       if (this.distance > 0) {
-        this.direction = "down";
+        
         this.currentInd = this.selectedInd - this.moveIndex;
       } else {
-        this.direction = "up";
+        
         this.currentInd = this.selectedInd + this.moveIndex;
       }
     },
     touchend(e) {
       //超出边界判断
       if (this.currentInd < 1) {
+
         this.selectedInd = 1;
         this.currentInd = 1;
       } else if (this.currentInd > this.dataslen) {
+
         this.selectedInd = this.dataslen;
         this.currentInd = this.dataslen;
       } else {
+        
         this.selectedInd = this.currentInd;
       }
 
       //设置当前列表的位置
       this.top = (2 - this.selectedInd) * 42;
 
-      this.$emit(
-        "isselected",
-        this.cloumn,
-        this.cloumndatas[this.selectedInd - 1]
-      );
+      this.$emit("isselected", this.cloumn, this.cloumndatas[this.selectedInd - 1]);
     },
     rotateXX(i) {
       return `rotateX(${36 * (this.currentInd - i - 1)}deg)`;

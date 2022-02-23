@@ -1,24 +1,10 @@
 <template>
   <div id="test">
-    <div class="outer">
-    <div class="inner">
       <img src="./assets/logo.png">
       <input type="tel" maxlength="6" ref="tel" v-model="code"/>
       <span @click="linkto">跳转</span>
-      <!-- <by-gesturelock :opts="this.opts"/> -->
       <by-checkbox></by-checkbox>
-      <!-- <table>
-        <tr v-for="item in datas" :key="item.id">
-          <td>{{item.link}}</td>
-          <td>{{item.pic}}</td>
-          
-          <td>{{item.date}}</td>
-          <td>{{item.title}}</td>
-        </tr>
-      </table> -->
-    
-    </div>
-    </div>
+    <by-input v-model="val" type="tel" maxLength="8"></by-input>
     <by-picker v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker>
 
   </div>
@@ -62,6 +48,7 @@ export default {
       }
     };
     return {
+      val:'hahah',
       datas: [],
       options: {
         loadDownFn: true,
@@ -141,6 +128,12 @@ export default {
   },
 
   watch:{
+
+    val(newVal){
+
+      console.log(newVal)
+
+    },
 
     autoReceiveVal(newVal){
       let flag = newVal && newVal.length;

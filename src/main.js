@@ -14,11 +14,13 @@ import ByCheckbox from '@/components/checkbox'
 import ByGestureLock from '@/components/gesturelock'
 import ByDialog from '@/components/dialog'
 import ByPicker from '@/components/picker'
+import ByInput from '@/components/input'
 
 let by_component = [
   ByCheckbox,
   ByGestureLock,
-  ByPicker
+  ByPicker,
+  ByInput
 ]
 by_component.forEach( component => {
   Vue.use(component)

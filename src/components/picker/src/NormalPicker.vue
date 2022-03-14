@@ -32,6 +32,18 @@ export default {
     cloumn: {
       default: 0,
       type: [Number, String]
+    },
+
+    itemHigh:{
+
+      default:42,
+      type:[Number,String]
+    },
+
+    showRows:{
+
+      default:3,
+      type:[Number,String]
     }
   },
   data() {
@@ -44,17 +56,33 @@ export default {
       distance: 0,
       lockFlag: false,
       moveIndex: 0,
-      currentInd: 2
+      currentInd: 2,
+      pickerStyle:{}
     };
   },
   created() {
 
     this.dataslen = this.cloumndatas instanceof Array ? this.cloumndatas.length : 0;
+
+    this.pickerStyle = {
+
+      height:this.itemHigh+'PX',
+      padding:this.itemHigh*Math.floor(this.showRows/2)+'PX'+' 0'
+    },
+
+    this.currentInd = this.selectedInd = Math.ceil(this.showRows/2)
   },
-  updated() {},
+  mounted() {
+    this.findByDefault();
+  },
   methods: {
     findByDefault() {
 
+      if(this.datalen == 1){
+
+        this.top = this.itemHigh
+        this.currentInd = this.selectedInd = 1
+      }
       this.$emit("isselected", this.cloumn, this.cloumndatas[this.selectedInd - 1]);
     },
     touchstart(e) {
@@ -98,16 +126,14 @@ export default {
       }
 
       //设置当前列表的位置
-      this.top = (2 - this.selectedInd) * 42;
+      this.top = (Math.ceil(this.showRows/2) - this.selectedInd) * 42;
 
       this.$emit("isselected", this.cloumn, this.cloumndatas[this.selectedInd - 1]);
     },
+    
     rotateXX(i) {
       return `rotateX(${36 * (this.currentInd - i - 1)}deg)`;
     }
-  },
-  mounted() {
-    this.findByDefault();
   }
 };
 </script>

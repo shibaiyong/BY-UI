@@ -50,6 +50,33 @@ const sortBy = (prop) => {
     
 }
 
+//计数器，正序，反序都行
+export const runCountDown = (start, end, frenquency, eachTime, returnShow, cb) => {
+    //start 起始数字  frenquency：数字变化频率，eachTime：每次变化时间， returnShow:是否回显
+    let cb1 = cb ? cb : new Function
+
+    let allcount = end - start
+    let step = allcount/frenquency
+    let countDownTimer = setInterval(()=>{
+        start = start + step
+        if(start <= end && step < 0){
+            clearInterval(countDownTimer)
+            cb1(end)
+            return false
+        }else if(start >= end && step > 0){
+            clearInterval(countDownTimer)
+            cb1(end)
+            return false
+        }
+
+        if(returnShow){
+            cb1(Math.round(start))
+        }
+        
+    },eachTime)
+
+}
+
 export const setCookie = (name, deadTime, value) => {//设置cookie
 
     let currentTime = new Date();

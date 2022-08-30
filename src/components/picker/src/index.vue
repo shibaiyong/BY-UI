@@ -11,7 +11,7 @@
 
     <ul class="pickerscontainer">
       <li v-for="(item,index) in datasarray" :key="item.keyInd">
-        <Picker :cloumn="index" :defaultvalue="item.defaultvalue" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
+        <Picker :cloumn="index" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
       </li>
     </ul>
   </div>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+
+// import Picker from './picker.vue'
 
 import Picker from './NormalPicker.vue'
 
@@ -47,18 +49,35 @@ export default {
   },
   data() {
     return {
-      arr:[]
+      arr:[],
+      canMove:true
     };
   },
 
+  created(){
+    this.$root.$on('isMove', res => {
+
+      this.canMove = res
+      
+    })
+  },
+
   mounted(){
+
+    //防止在滑动日期选择组件的时候，整个页面也跟着滑动
+    document.body.addEventListener('touchmove', e => {
+      console.log(this.canMove)
+      if(!this.canMove){
+        e.preventDefault()
+      }
+    },{passive:false})
   },
   
   methods: {
 
-    selected(index, obj){
+    selected(type, index, obj){
       
-      this.$set(this.arr, index, Object.assign({}, {index}, obj))
+      this.$set(this.arr, index, Object.assign({}, {index, type}, obj))
       this.$emit('input', this.arr)
 
     },
@@ -69,8 +88,13 @@ export default {
 
     pickercancel(){
       this.$emit('cancel','')
+    },
+
+    setDefaultDate(obj){
+      for(let i in obj){
+        this.$refs[i][0].calculateIndex(obj[i])
+      }
     }
-    
   },
 
   components:{

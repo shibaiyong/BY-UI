@@ -10,25 +10,10 @@ import '@/utils/ajustScreen.js'
 import router from '@/router'
 
 import App from './App'
-import ByCheckbox from '@/components/checkbox'
-import ByGestureLock from '@/components/gesturelock'
-import ByDialog from '@/components/dialog'
-import ByPicker from '@/components/picker'
-import ByInput from '@/components/input'
+import by from '@/components'
 
-let by_component = [
-  ByCheckbox,
-  ByGestureLock,
-  ByPicker,
-  ByInput
-]
-by_component.forEach( component => {
-  Vue.use(component)
-})
-
+Vue.use(by)
 Vue.use(Api)
-
-Vue.prototype.$showdialog = ByDialog
 
 new Vue({
   el: '#app',

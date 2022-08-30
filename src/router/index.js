@@ -4,16 +4,24 @@ Vue.use(Router)
 
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
 
- const Test = r => require.ensure([], () => r(require('@/Test')), 'Test')
+const Test = r => require.ensure([], () => r(require('@/Test')), 'Test')
  const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
 // const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 
 const instance = new Router({
   mode: 'hash',
   routes: [
-    
 
     {
+      path: '/',
+      name: 'Test',
+      component: Test,
+      meta: {
+        title: 'Test',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },{
       path: '/test',
       name: 'Test',
       component: Test,

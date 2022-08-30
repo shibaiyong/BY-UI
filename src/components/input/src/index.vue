@@ -1,6 +1,12 @@
 <template>
+<div class="container" v-show="visible">
 <div class="input-box">
-  <input type="text" v-model="val" placeholder="placeholder" :readonly="Mreadonly" @input="getFormatVal"/>  
+  <input type="text" v-model="val" :readonly="Mreadonly" @input="getFormatVal"/>  
+
+  <span @click="callback1">清空</span><span @click="callback2">确认</span>
+</div>
+
+
 </div>
 </template>
 
@@ -22,12 +28,14 @@ export default {
       default:false,
       type:Boolean
     },
-    maxLength:[String,Number]
+    maxLength:[String,Number],
+    visible:[Boolean]
   },
   data() {
     this.reg = /[\D]/ig
     return {
-      val:''
+      val:'',
+      isEmpty:false
     }
   },
 
@@ -44,8 +52,22 @@ export default {
         this.$emit('input', this.val)
         return false
       }
-      this.$emit('input', this.val)
-    }
+      if(isEmpty){
+        this.$emit('input', 0)
+      }else{
+        this.$emit('input', this.val)
+      }
+      
+    },
+    callback1() {
+      this.isEmpty = true
+      this.val=''
+      this.$emit("cancelCB");
+    },
+    callback2() {
+      this.isEmpty = false
+      this.$emit("confirmCB");
+    },
     
   }
 };
@@ -53,7 +75,10 @@ export default {
 <style scoped>
 
     .input-box{
-      width:100%;
+      width:4rem;
+      height:4rem;
+      background:white;
+      margin:2rem auto;
     }
 
     .input-box input{
@@ -62,10 +87,24 @@ export default {
       outline: none;
       text-align: right;
       color:#666;
-      border:none;
+      /* border:none; */
       padding:0;
       margin:0;
       box-sizing: border-box;
+    }
+
+    .input-box span{
+      font-size:0.20rem;
+      display: inline-block;
+      width:0.5rem;
+    }
+
+    .container{
+      width:100%;
+      position:fixed;
+      top:0;
+      bottom:0;
+      background:rgb(0,0,0,0.6)
     }
   
 </style>

@@ -1,12 +1,10 @@
 <template>
 <div class="dateArea">
 
-  <ul ref="years" :style="{top:top+'px'}">
+  <ul ref="years" @scroll="winScroll($event)" @touchend="touchend">
     <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{transform:rotateXX(index)}" :key="item.id">{{item[name]}}</li>
   </ul>
 
-  <div class="datemask" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
-  </div>
 </div>
 </template>
 
@@ -49,7 +47,8 @@ export default {
       lockFlag: false,
       moveIndex: 0,
       currentInd: 2,
-      pickerStyle: {}
+      pickerStyle: {},
+      scrollTop:0,
     };
   },
   created() {
@@ -60,7 +59,12 @@ export default {
     };
   },
   mounted() {
-    this.findByDefault();
+    //this.findByDefault();
+    this.$nextTick(()=> {
+      this.$refs.years.scrollTo(0,10)
+      console.log(100,100)
+    })
+    
   },
   methods: {
     calculateIndex(date) {
@@ -72,7 +76,7 @@ export default {
       }
       
       //设置当前列表的位置
-      this.top = (Math.ceil(this.showRows / 2) - this.selectedInd) * 42
+      this.$refs.years.scrollTop = (Math.ceil(this.showRows / 2) - this.selectedInd) * this.itemHigh
 
       this.$emit("isselected", '2', this.cloumn, this.cloumndatas[this.selectedInd - 1])
     },
@@ -80,41 +84,24 @@ export default {
 
       if (this.datalen == 1) {
 
-        this.top = this.itemHigh
+        this.$refs.years.scrollTop = this.itemHigh
         this.currentInd = this.selectedInd = 1
         this.$emit("isselected", '2', this.cloumn, this.cloumndatas[this.selectedInd - 1])
         return false
       }
       this.calculateIndex(this.defaultValDate)
     },
-    
-    touchstart(e) {
-      let locations = e.targetTouches[0];
 
-      this.parentoffsettop = this.$refs.years.offsetTop;
-
-      this.pageY = locations.pageY;
-    },
-    touchmove(e) {
-      this.$root.$emit("isMove", false);
-
-      let locations = e.targetTouches[0];
-      //手指滑动的距离
-      this.distance = locations.pageY - this.pageY;
+    winScroll(e){
       //设置当前列表的位置
-      this.top = this.parentoffsettop + this.distance;
+      this.scrollTop = e.target.scrollTop
+      //console.log(this.$refs.years.scrollTop)
       //计算第几项被选中
-      this.moveIndex = Math.round(Math.abs(this.distance) / 42);
-
-      //手势移动的方向
-      if (this.distance > 0) {
-        this.currentInd = this.selectedInd - this.moveIndex;
-      } else {
-        this.currentInd = this.selectedInd + this.moveIndex;
-      }
+      this.currentInd = this.selectedInd = Math.round(Math.abs(this.scrollTop) / this.itemHigh);
     },
+    
     touchend(e) {
-      this.$root.$emit("isMove", false);
+
       //超出边界判断
       if (this.currentInd < 1) {
         this.selectedInd = 1;
@@ -127,7 +114,7 @@ export default {
       }
 
       //设置当前列表的位置
-      this.top = (Math.ceil(this.showRows / 2) - this.selectedInd) * 42;
+      this.$refs.years.scrollTop = (Math.ceil(this.showRows / 2) - this.selectedInd) * this.itemHigh + 'PX';
 
       this.$emit("isselected", '1', this.cloumn, this.cloumndatas[this.selectedInd - 1])
     },
@@ -151,27 +138,8 @@ export default {
   position: relative;
   width: 100%;
   height: 42px;
-  overflow: hidden;
   padding: 42px 0;
   box-sizing: content-box;
-}
-
-.dateArea .datemask {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    white 0%,
-    transparent 33%,
-    transparent 67%,
-    white 100%
-  );
-  z-index: 3;
 }
 .dateArea ul {
   position: absolute;
@@ -182,7 +150,9 @@ export default {
   z-index: 2;
   left: 0;
   top: 0;
-  transition: all 250ms linear;
+  bottom:0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .dateArea ul li {
   height: 42px;

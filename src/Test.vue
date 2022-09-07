@@ -5,8 +5,8 @@
       <span @click="linkto">跳转</span>
       <by-checkbox></by-checkbox>
     <by-input v-model="val" type="tel" maxLength="8"></by-input>
-    <by-picker v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker>
-
+    <!-- <by-dialog :visible="ifShow" type="confirm" title="温馨提示" content="暂无内容" cancel="取消" confirm="确认" @cancelCB="cancelRespone" @confirmCB="confirmRespone"></by-dialog>
+    <by-picker ref="picker" v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker> -->
   </div>
 </template>
 

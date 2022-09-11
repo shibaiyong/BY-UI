@@ -11,7 +11,7 @@
 
     <ul class="pickerscontainer">
       <li v-for="(item,index) in datasarray" :key="item.keyInd">
-        <Picker :cloumn="index" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
+        <Picker :cloumn="index" :showRows="item.showRows" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
       </li>
     </ul>
   </div>

@@ -55,22 +55,22 @@ export default {
     return {};
   },
   beforeUpdate() {
-    console.log("beforeUpdate");
+    //console.log("beforeUpdate");
   },
   updated() {
-    console.log("updated");
+    //console.log("updated");
   },
   beforeCreate() {
-    console.log("beforeCreate");
+    //console.log("beforeCreate");
   },
   created() {
-    console.log("created");
+    //console.log("created");
   },
   beforeMount() {
-    console.log("beforeMount");
+    //console.log("beforeMount");
   },
   mounted() {
-    console.log("mounted");
+    //console.log("mounted");
   },
   methods: {
     runTimer() {

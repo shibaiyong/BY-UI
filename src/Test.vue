@@ -2,11 +2,12 @@
   <div id="test">
       <img src="./assets/logo.png">
       <input type="tel" maxlength="6" ref="tel" v-model="code"/>
-      <span @click="linkto">跳转</span>
+      <span class="btn" @click="showPicker(1)">显示picker</span>
+      <span class="btn" @click="showPicker(2)">设置picker</span>
       <by-checkbox></by-checkbox>
     <by-input v-model="val" type="tel" maxLength="8"></by-input>
-    <!-- <by-dialog :visible="ifShow" type="confirm" title="温馨提示" content="暂无内容" cancel="取消" confirm="确认" @cancelCB="cancelRespone" @confirmCB="confirmRespone"></by-dialog>
-    <by-picker ref="picker" v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker> -->
+    <by-dialog :visible="ifShow" type="confirm" title="温馨提示" content="暂无内容" cancel="取消" confirm="确认" @cancelCB="cancelRespone" @confirmCB="confirmRespone"></by-dialog>
+    <by-picker ref="picker" v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel"></by-picker>
   </div>
 </template>
 
@@ -58,48 +59,58 @@ export default {
       dateRange:'今年累计',
       pickerShow:false,
       pickerdatas:[],
-      autoReceiveVal:{}
+      autoReceiveVal:{},
+      ifShow:false
     };
   },
-  created() {},
+  beforeUpdate(){
+    //console.log('parent beforeUpdate')
+  },
+  updated(){
+    //console.log('parent updated')
+  },
+  beforeCreate(){
+    //console.log('parent beforecreate')
+  },
+  created() {
+    console.log('parent created')
+  },
+  beforeMount(){
+    //console.log('parent beforeMount')
+  },
   mounted() {
     setTimeout(() => {
       this.$refs.tel.blur();
 
-
       this.pickerdatas = [
 
         {
-          defaultvalue:'1',
+          // defaultVal:'今年累计',
           keyName: 'name',
           keyInd:1,
+          showRows:5,
           cloumndatas: [
             {id:1,name:'今年月度'},
             {id:2,name:'今年累计'},
-            {id:3,name:'以往年度'}
+            {id:3,name:'以往年度'},
+            {id:4,name:'今年月度'},
+            {id:5,name:'今年累计'},
+            {id:6,name:'以往年度'}
           ]
         }
 
       ]
 
     }, 1000);
-    // this.$showdialog(
-    //   {
-    //     title: "我是标题",
-    //     cancel: "",
-    //     confirm: "确定",
-    //     content: "用户名和密码不能为空",
-    //     confirmCallback: vm => {
-    //       vm.visible = false;
-    //     }
-    //   },
-    //   true
-    // );
+    
   },
   methods: {
-    linkto() {
-
-      this.pickerShow=true
+    showPicker(val) {
+      if(val == 1){
+        this.pickerShow=true
+      }else if(val == 2){
+        this.setDefaultVal([{name:'今年月度'},{name:'3月'}])
+      }
       
     },
     loadUpFn(me) {
@@ -117,13 +128,71 @@ export default {
       });
     },
     pickerConfirm(val){
-
       console.log(val)
-
     },
 
     pickerCancel(){
       this.pickerShow = false
+    },
+    confirmRespone(){
+
+    },
+    cancelRespone(){
+      
+    },
+    setDefaultVal(newVal){
+      console.log(newVal)
+      if(newVal[0].name == '今年月度'){
+        this.pickerdatas = [{
+          defaultVal:newVal[0].name,
+          keyName: 'name',
+          keyInd:2,
+          showRows:5,
+          cloumndatas: [
+            {id:1,name:'今年月度'},
+            {id:2,name:'今年累计'},
+            {id:3,name:'以往年度'}
+          ]
+        },{
+          defaultVal:newVal[1].name,
+          keyName: 'name',
+          keyInd:4,
+          showRows:5,
+          cloumndatas: [
+            {id:1,name:'1月'},
+            {id:2,name:'2月'},
+            {id:3,name:'3月'}
+          ]
+        }]
+      }else if(newVal[0].name == '以往年度'){
+
+        this.pickerdatas = [{
+          defaultVal:newVal[0].name,
+          keyName: 'name',
+          keyInd:3,
+          showRows:5,
+          cloumndatas: [
+            {id:1,name:'今年月度'},
+            {id:2,name:'今年累计'},
+            {id:3,name:'以往年度'}
+          ]
+        },{
+          defaultVal:newVal[1].name,
+          keyName: 'name',
+          keyInd:5,
+          showRows:5,
+          cloumndatas: [
+            {id:1,name:'2021'},
+            {id:2,name:'2019'},
+            {id:3,name:'2018'},
+            {id:4,name:'2017'}
+          ]
+        }]
+
+      }else{
+        this.pickerdatas.splice(1,1)
+      }
+
     }
   },
 
@@ -136,13 +205,15 @@ export default {
     },
 
     autoReceiveVal(newVal){
+      console.log(newVal)
       let flag = newVal && newVal.length;
-
       if(flag && newVal[0].name == '今年月度'){
+        //可以根据对应的选项“今年月度/以往年度”设置对应的数据cloumndatas。定义一个方法实现对应数据的生成或查找
         this.pickerdatas.splice(1,1,{
-          defaultvalue:'1',
+          defaultVal:'2月',
           keyName: 'name',
-          keyInd:2,
+          keyInd:4,
+          showRows:5,
           cloumndatas: [
             {id:1,name:'1月'},
             {id:2,name:'2月'},
@@ -152,9 +223,10 @@ export default {
       }else if(flag && newVal[0].name == '以往年度'){
 
         this.pickerdatas.splice(1,1,{
-          defaultvalue:'2',
+          defaultVal:'2018',
           keyName: 'name',
-          keyInd:3,
+          keyInd:5,
+          showRows:5,
           cloumndatas: [
             {id:1,name:'2021'},
             {id:2,name:'2019'},
@@ -164,9 +236,7 @@ export default {
         })
 
       }else{
-
         this.pickerdatas.splice(1,1)
-
       }
 
     }
@@ -176,4 +246,8 @@ export default {
 </script>
 
 <style>
+
+.btn{
+  font-size: .4rem;
+}
 </style>

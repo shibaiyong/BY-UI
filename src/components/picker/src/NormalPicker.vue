@@ -1,5 +1,5 @@
 <template>
-<div class="dateArea">
+<div class="dateArea" :style="pickerStyle">
 
   <ul ref="years" :style="{top:top+'px'}">
     <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{transform:rotateXX(index)}" :key="item.id">{{item[name]}}</li>
@@ -53,6 +53,7 @@ export default {
     };
   },
   created() {
+    console.log(this.showRows)
     this.dataslen = this.cloumndatas instanceof Array ? this.cloumndatas.length : 0;
     this.pickerStyle = {
       height: this.itemHigh + "PX",
@@ -64,9 +65,12 @@ export default {
   },
   methods: {
     calculateIndex(date) {
-      console.log(date)
       if(date){
+        console.log(this.cloumndatas)
+        //date未找到时，则展示默认选中项。
+        //findIndex:对于空数组不执行，没找到时返回-1，找到后返回对应的索引并且后面的元素不再执行。
         this.currentInd = this.selectedInd = 1 + this.cloumndatas.findIndex(item => item.name == date);
+        console.log(this.currentInd)
       }else{
         this.currentInd = this.selectedInd = Math.ceil(this.showRows/2)
       }

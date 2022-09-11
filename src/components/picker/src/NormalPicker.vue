@@ -170,12 +170,15 @@ export default {
   bottom: 0;
   background: linear-gradient(
     to bottom,
-    white 0%,
+    /* white 0%, */
+    #eee 0%,
     transparent 33%,
     transparent 67%,
-    white 100%
+    /* white 100% */
+    #eee 0%
   );
   z-index: 3;
+  opacity: 0.6;
 }
 .dateArea ul {
   position: absolute;

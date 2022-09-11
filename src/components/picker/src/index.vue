@@ -1,22 +1,21 @@
 <template>
-<div class="pickergroupmask" v-show="visible">
+<!-- <div class="pickergroupmask" v-show="visible"> -->
+  <div class="pickergroup" v-show="visible">
+    
+    <slot name="topOperate" :cancel='pickercancel' :confirm="pickerconfirm"></slot>
 
-  <div class="pickergroup">
-    <div class="opt">
-      <span @click="pickercancel">取消</span>
-      <span @click="pickerconfirm">确定</span>
-    </div>
-
-    <slot></slot>
+    <slot name="viewSection"></slot>
 
     <ul class="pickerscontainer">
+      <li id="bar"></li>
       <li v-for="(item,index) in datasarray" :key="item.keyInd">
         <Picker :cloumn="index" :showRows="item.showRows" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
       </li>
     </ul>
+    <slot name="bottomOperate" :cancel='pickercancel' :confirm="pickerconfirm"></slot>
   </div>
   
-</div>
+<!-- </div> -->
 </template>
 
 <script>
@@ -115,10 +114,8 @@ export default {
   }
 
   .pickergroup{
-    position:absolute;
-    background:white;
-    left:0;
-    bottom:0;
+    background:#eee;
+    /* background:white; */
     width:100%;
   }
 
@@ -126,25 +123,21 @@ export default {
     display:flex;
     justify-content: space-between;
     padding:0.5rem 0;
+    position: relative;
   }
 
   .pickerscontainer li{
     width:100%;
   }
 
-  .opt{
-    display: flex;
-    justify-content: space-between;
-    align-items:center;
-    height:0.9rem;
-    background: #f1f1f1;
-    padding:0 0.48rem;
-    font-size:0.3rem;
-    color:#ffa900;
-    margin-bottom:0.3rem;
-  }
-
-  .opt span{
-    color:#333;
+  #bar{
+    /* background:#ccc; */
+    background:white;
+    position: absolute;
+    top:calc(0.5rem + 84PX);
+    z-index:1;
+    left:0;
+    width:100%;
+    height:42PX
   }
 </style>

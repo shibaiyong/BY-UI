@@ -7,7 +7,7 @@
       <by-checkbox></by-checkbox>
     <by-input v-model="val" type="tel" maxLength="8"></by-input>
     <by-dialog :visible="ifShow" type="confirm" title="温馨提示" content="暂无内容" cancel="取消" confirm="确认" @cancelCB="cancelRespone" @confirmCB="confirmRespone"></by-dialog>
-    <by-picker ref="picker" v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel">
+    <!-- <by-picker ref="picker" v-model="autoReceiveVal" :datasarray="pickerdatas" :visible="pickerShow" @confirm="pickerConfirm" @cancel="pickerCancel">
       <template v-slot:topOperate="topOperateVal">
         <div class="opt">
           <span @click="topOperateVal.cancel">取消</span>
@@ -20,7 +20,9 @@
           <span @click="bottomOperateVal.confirm">确定</span>
         </div>
       </template>
-    </by-picker>
+    </by-picker> -->
+    <input type="text" placeholder="请选择日期" v-model="calenderValue"/>
+    <by-calender :defaultValue="calenderValue" :visible="calenderShow" :format=" 'yyyy 年 MM 月 dd 日' " :format-value="'yyyy-MM-dd'" @clickCalCB="clickCalResp" @clickMonBtnCB="clickMonBtnResp"/>
   </div>
 </template>
 
@@ -73,7 +75,10 @@ export default {
       pickerShow: false,
       pickerdatas: [],
       autoReceiveVal: {},
-      ifShow: false
+      ifShow: false,
+      dateValue:'',
+      calenderShow:true,
+      calenderValue:''
     };
   },
   beforeUpdate() {
@@ -144,6 +149,16 @@ export default {
     },
     confirmRespone() {},
     cancelRespone() {},
+    clickCalResp(val){
+
+      this.calenderValue = val
+
+    },
+    clickMonBtnResp(val){
+
+      console.log(val)
+
+    },
     setDefaultVal(newVal) {
       console.log(newVal);
       if (newVal[0].name == "今年月度") {

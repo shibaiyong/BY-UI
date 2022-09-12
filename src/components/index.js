@@ -4,6 +4,7 @@ import ByGestureLock from './gesturelock'
 import ByDialog from './dialog/main.js'
 import ByPicker from './picker'
 import ByInput from './input'
+import ByCalender from './calender'
 
 import { $dialog } from './dialog'
 
@@ -12,7 +13,8 @@ let by_component = [
   ByGestureLock,
   ByPicker,
   ByInput,
-  ByDialog
+  ByDialog,
+  ByCalender
 ]
 
 let $prototype = { $dialog }

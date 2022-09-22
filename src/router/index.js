@@ -5,8 +5,9 @@ Vue.use(Router)
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
 
 const Test = r => require.ensure([], () => r(require('@/Test')), 'Test')
- const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
- const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'DatePicker')
+const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
+const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'DatePicker')
+const DropLoad = r => require.ensure([], () => r(require('@/DropLoad.vue')), 'DropLoad')
 
 // const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 
@@ -54,7 +55,14 @@ const instance = new Router({
       }
     },
 
-    
+    {
+      path: '/dropload',
+      name: 'DropLoad',
+      component: DropLoad,
+      meta: {
+        title: 'DropLoad',
+      }
+    },
     
   ]
 })

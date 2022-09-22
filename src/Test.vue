@@ -260,7 +260,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btn {
   font-size: 0.4rem;
 }

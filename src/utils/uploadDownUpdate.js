@@ -23,14 +23,18 @@ const DropLoad = (function(){
         this.scrollArea.appendChild(domDown)
       }
       this.getHeight()
-      this.addTouchEvent(this)
-      this.autoLoad(this)
+      this.addTouchEvent(me)
+      this.autoLoad(me)
     },
     addTouchEvent(me){
 
       this.scrollArea.addEventListener('scroll',function(){
-        console.log(this.scrollTop)
         me.$scrollTop = this.scrollTop
+        if(me.$scrollHeight-1 <= me.$clientHeight + me.$scrollTop && !me.isLoading && !me.noData){
+          me.isLoading = true
+          me.$domDown.innerHTML = `<span class="loading">正在加载</span>`
+          me.loadDownFn(me)
+        }
       })
 
     },
@@ -48,14 +52,18 @@ const DropLoad = (function(){
     },
     noData(){
       this.noData = true
-      this.$domDown.innerHTML = `<span class="loading">正在加载</span>`
+      this.$domDown.innerHTML = `<span class="loading">没有更多数据了</span>`
     },
     resetLoad(){
 
-      this.$vnode.context.$nextTick(()=>{
-        this.getHeight()
-        this.autoLoad()
-      })
+      if(!this.noData){
+        this.$domDown.innerHTML = `<span class="refresh">↑上拉加载更多</span>`
+        this.$vnode.context.$nextTick(()=>{
+          this.getHeight()
+          this.autoLoad(this)
+        })
+      }
+      this.isLoading = false
     }
   }
 

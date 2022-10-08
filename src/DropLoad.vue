@@ -4,21 +4,32 @@
     <div class="banner">
       content
     </div>
+    <component :is="coms"></component>
     <div class="list" v-dropload="opts">
-      <div class="list-item">
+      <div class="content-wrraper">
+        <div class="list-item" v-for="(item,index) in dataList" :key="index">
 
+          {{item.title}}
+
+        </div>
       </div>
     </div>
-      
+    <!-- <div @click="showComs('one')">one</div>
+    <div @click="showComs('two')">two</div> -->
+    <!-- <router-view/> -->
+    
   </div>
 </template>
 <script>
-import { getList } from "./requestDataInterface";
+import { getList } from "./requestDataInterface"
+import Create from "./Create.vue"
+import Create1 from "./Create1.vue"
 
 export default {
   name: "Test",
   data() {
     return {
+      coms:'two',
       dataList:[],
       pageNum:0,
       pageSize:10,
@@ -27,11 +38,19 @@ export default {
       }
     }
   },
+  components:{
+    one:Create,
+    two:Create1
+  },
   mounted() {
+    
   },
   methods: {
-
-    getList(){
+    showComs(val){
+      console.log(val)
+      this.coms = val
+    },
+    getList(me){
 
       let params = {
         pageNum:this.pageNum++,
@@ -40,7 +59,8 @@ export default {
 
       getList({}).then( res => {
 
-        consoel.log(res)
+        this.dataList = [...this.dataList,...res.lists]
+        me.resetLoad()
 
       })
     }
@@ -63,6 +83,12 @@ export default {
   width:100%;
   flex:1;
   background:darksalmon;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+.list-item{
+  font-size:.4rem;
 }
 
 </style>

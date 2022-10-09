@@ -4,6 +4,7 @@
       <input type="tel" maxlength="6" ref="tel" v-model="code"/>
       <span class="btn" @click="showPicker(1)">显示picker</span>
       <span class="btn" @click="showPicker(2)">设置picker</span>
+      <span class="btn" @click="gotoCreate">跳转字路由</span>
       <by-checkbox></by-checkbox>
     <by-input v-model="val" type="tel" maxLength="8"></by-input>
     <by-dialog :visible="ifShow" type="confirm" title="温馨提示" content="暂无内容" cancel="取消" confirm="确认" @cancelCB="cancelRespone" @confirmCB="confirmRespone"></by-dialog>
@@ -119,6 +120,9 @@ export default {
     }, 1000);
   },
   methods: {
+    gotoCreate(){
+      this.$router.push('/dropload/create')
+    },
     showPicker(val) {
       if (val == 1) {
         this.pickerShow = true;
@@ -260,7 +264,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btn {
   font-size: 0.4rem;
 }

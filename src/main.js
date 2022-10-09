@@ -3,7 +3,7 @@
 import Vue from 'vue'
 
 import '@/assets/css/common.css'
-import '@/assets/css/dropload.css'
+// import '@/assets/css/dropload.css'
 import Api from '@/utils/api.js'
 import '@/utils/ajustScreen.js'
 

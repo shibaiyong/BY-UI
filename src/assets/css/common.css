@@ -1,5 +1,5 @@
-body, div, ul, ol, dl, dt, dd, li, dl, h1, h2, h3, h4
-{margin:0;padding:0;font-style:normal;font:12px;} 
+body, div, ul, ol, dl, dt, dd, li, dl, h1, h2, h3, h4,p
+{margin:0;padding:0;font-style:normal;} 
  
 ol, ul ,li{list-style: none;} 
 img {border: 0; vertical-align:middle;} 
@@ -88,4 +88,13 @@ a:active{
 
 .mytip .mint-popup{
   width:100%;
+}
+/* 上拉加载的样式 */
+.dropload-refresh{
+  text-align: center;
+  font-size:0;
+}
+.dropload-refresh span{
+  color:red;
+  font-size:0.2rem;
 }

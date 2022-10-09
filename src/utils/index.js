@@ -1,6 +1,6 @@
 
-import {CreateDropLoad} from './dropload.js'
-
+// import {CreateDropLoad} from './dropload.js'
+import { DropLoad } from './uploadDownUpdate.js'
 //时间格式化
 
 export function formatDate(date, fmt) {
@@ -166,7 +166,7 @@ export const directives = {
     },
     dropload:{
         inserted(el, binding, vnode) {
-            CreateDropLoad(el,binding.value,vnode)
+            new DropLoad(el,binding.value,vnode)
         }
     }
 }

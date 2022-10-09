@@ -5,7 +5,10 @@ Vue.use(Router)
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
 
 const Test = r => require.ensure([], () => r(require('@/Test')), 'Test')
- const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
+const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
+const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'DatePicker')
+const DropLoad = r => require.ensure([], () => r(require('@/DropLoad.vue')), 'DropLoad')
+const Create = r => require.ensure([], () => r(require('@/Create.vue')), 'Create')
 // const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 
 const instance = new Router({
@@ -40,9 +43,29 @@ const instance = new Router({
         requireAuth: true,
         roles: ['superadmin']
       }
-    }
+    },
+    {
+      path: '/datepicker',
+      name: 'DatePicker',
+      component: DatePicker,
+      meta: {
+        title: 'DatePicker',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
 
-    
+    {
+      path: '/dropload',
+      name: 'DropLoad',
+      component: DropLoad,
+      // children:[
+      //   {
+      //     path: 'create',
+      //     component: Create,
+      //   }
+      // ]
+    },
     
   ]
 })

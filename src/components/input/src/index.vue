@@ -1,7 +1,7 @@
 
 <template>
 <div class="input-box">
-  <input type="text" v-model="val" placeholder="placeholder" :readonly="Mreadonly" @input="getFormatVal"/>  
+  <input type="text" v-model="val" placeholder="placeholder" :readonly="Mreadonly" @input="getFormatVal"/> 
 </div>
 </template>
 
@@ -28,6 +28,9 @@ export default {
       val:''
     }
   },
+  updated(){
+    //绑定到页面的数据才触发该钩子函数
+  },
   created(){
     this.val = this.value
   },
@@ -42,8 +45,8 @@ export default {
       this.$emit('input', this.val)
     }
     
-  }
-};
+  },
+}
 </script>
 <style scoped>
     .input-box{

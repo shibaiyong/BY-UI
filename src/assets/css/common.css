@@ -98,3 +98,14 @@ a:active{
   color:red;
   font-size:0.2rem;
 }
+
+.pull-refresh-container{
+  text-align: center;
+  font-size:0;
+  overflow: hidden;
+}
+
+.pull-refresh-container span{
+  font-size:.24rem;
+  color:yellow;
+}

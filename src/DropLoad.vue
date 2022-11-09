@@ -2,9 +2,9 @@
   <div id="dropload">
 
     <div class="banner">
-      content
+      
     </div>
-    <component :is="coms"></component>
+    <!-- <component :is="coms"></component> -->
     <div class="list" v-dropload="opts">
       <div class="content-wrraper">
         <div class="list-item" v-for="(item,index) in dataList" :key="index">
@@ -34,7 +34,10 @@ export default {
       pageNum:0,
       pageSize:10,
       opts:{
-        loadDownFn:this.getList
+        loadDownFn:this.pushRefresh,
+        loadUpFn:this.pullRefresh,
+        domDownFlag:'yes',
+        domUpFlag:'yes'
       }
     }
   },
@@ -50,7 +53,24 @@ export default {
       console.log(val)
       this.coms = val
     },
-    getList(me){
+    pullRefresh(me){
+      console.log('加载上方')
+      let params = {
+        pageNum:this.pageNum++,
+        pageSize:this.pageSize,
+      }
+
+      getList({}).then( res => {
+
+        this.dataList = [...res.lists]
+        me.resetLoad()
+
+      })
+
+    },
+    pushRefresh(me){
+
+      console.log('加载下方')
 
       let params = {
         pageNum:this.pageNum++,
@@ -77,7 +97,27 @@ export default {
 .banner{
   height:2rem;
   background:red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap:nowrap;
 }
+
+.banner .one{
+  /* width:33%; */
+  background:white;
+}
+
+.banner .one.two{
+  /* width:33%; */
+  background:yellow;
+}
+
+.banner .one.three{
+  /* width:33%; */
+  background:blue;
+}
+
 
 .list{
   width:100%;

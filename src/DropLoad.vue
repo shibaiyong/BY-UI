@@ -78,15 +78,10 @@ export default {
         pageNum:this.pageNum++,
         pageSize:this.pageSize,
       }
-      setTimeout(()=>{
-
-        getList({}).then( res => {
-          this.dataList = [...this.dataList,...res.lists]
-          me.resetLoad()
-        })
-
-      },600)
-      
+      getList({}).then( res => {
+        this.dataList = [...this.dataList,...res.lists]
+        me.resetLoad()
+      })
     }
   }
 };

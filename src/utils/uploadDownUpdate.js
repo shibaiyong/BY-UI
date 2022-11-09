@@ -55,17 +55,18 @@ const DropLoad = (function(){
       if(me.domUpFlag && me.domUpFlag == 'yes'){
 
         this.scrollArea.addEventListener('touchstart',function(e){
-          me.$scrollTop = this.scrollTop;
+          me.$touchScrollTop = this.scrollTop;
           me.initPageY = e.targetTouches[0].pageY
         })
 
         this.scrollArea.addEventListener('touchmove',function(e){
           movePageY = e.targetTouches[0].pageY
           distance = movePageY - me.initPageY
-          if(distance>0 && me.$scrollTop <= 0){
+          if(distance>0 && me.$touchScrollTop <= 0){
             me.direction = 'down'
             if(distance >= 42){
               me.$domUp.innerHTML = `<span class="loading">释放加载</span>`
+              distance = 42
             }
             me.$domUp.style.height = distance + 'px'
           }else if(distance<0){
@@ -74,7 +75,7 @@ const DropLoad = (function(){
         })
 
         this.scrollArea.addEventListener('touchend',function(e){
-          if(me.direction == 'down' && me.$scrollTop <= 0){
+          if(me.direction == 'down' && me.$touchScrollTop <= 0){
             domUpHeight = me.$domUp.children[0].offsetHeight
             me.$domUp.innerHTML = `<span class="loading">正在加载</span>`
             me.$domUp.style.height = domUpHeight + 'px'

@@ -63,7 +63,9 @@ export default {
       getList({}).then( res => {
 
         this.dataList = [...res.lists]
-        me.resetLoad()
+        setTimeout(()=>{
+          me.resetLoad()
+        },1000)
 
       })
 
@@ -78,10 +80,8 @@ export default {
       }
 
       getList({}).then( res => {
-
         this.dataList = [...this.dataList,...res.lists]
         me.resetLoad()
-
       })
     }
   }

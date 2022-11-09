@@ -46,7 +46,6 @@ const DropLoad = (function(){
       this.scrollArea.addEventListener('scroll',function(){
         me.$scrollTop = this.scrollTop
         if(me.$scrollHeight-1 <= me.$clientHeight + me.$scrollTop && !me.isLoading && !me.noData){
-          console.log('scroll')
           me.isLoading = true
           me.$domDown.innerHTML = `<span class="loading">正在加载</span>`
           me.loadDownFn(me)
@@ -63,8 +62,11 @@ const DropLoad = (function(){
         this.scrollArea.addEventListener('touchmove',function(e){
           movePageY = e.targetTouches[0].pageY
           distance = movePageY - me.initPageY
-          if(distance>0){
+          if(distance>0 && me.$scrollTop <= 0){
             me.direction = 'down'
+            if(distance >= 42){
+              me.$domUp.innerHTML = `<span class="loading">释放加载</span>`
+            }
             me.$domUp.style.height = distance + 'px'
           }else if(distance<0){
             me.direction = 'up'
@@ -72,21 +74,13 @@ const DropLoad = (function(){
         })
 
         this.scrollArea.addEventListener('touchend',function(e){
-          
-          // console.log('touchmove')
-          // console.log(me.direction)
-          console.log(me.$scrollTop)
           if(me.direction == 'down' && me.$scrollTop <= 0){
             domUpHeight = me.$domUp.children[0].offsetHeight
             me.$domUp.innerHTML = `<span class="loading">正在加载</span>`
             me.$domUp.style.height = domUpHeight + 'px'
-            setTimeout(()=>{
-              me.loadUpFn(me)
-            },1000)
+            me.loadUpFn(me)
           }else if(me.direction == 'up' && me.$scrollHeight-1 <= me.$clientHeight + me.$scrollTop && !me.noData){
-            setTimeout(()=>{
-              me.autoLoad(me)
-            },1000)
+            me.autoLoad(me)
           }
         })
       }

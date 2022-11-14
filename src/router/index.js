@@ -16,15 +16,6 @@ const instance = new Router({
   routes: [
 
     {
-      path: '/',
-      name: 'Test',
-      component: Test,
-      meta: {
-        title: 'Test',
-        requireAuth: true,
-        roles: ['superadmin']
-      }
-    },{
       path: '/test',
       name: 'Test',
       component: Test,

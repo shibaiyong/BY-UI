@@ -3,11 +3,17 @@
         <div class="calenderContainer" v-show="visible">
             <div class="title">
 
-                <a href="javascript:void(0);" class="prev" @click="changeMonth('prve')"><img src="@/assets/logImages/arrow_tip.png"/>上一月</a>
+                <a href="javascript:void(0);" class="prev" @click="changeMonth('prve')">
+                  <!-- <img src="@/assets/logImages/arrow_tip.png"/> -->
+                  上一月
+                </a>
 
                 <span>{{title}}</span>
                 
-                <a href="javascript:void(0);" class="next" @click="changeMonth('next')">下一月<img src="@/assets/logImages/arrow_tip.png"/></a>
+                <a href="javascript:void(0);" class="next" @click="changeMonth('next')">
+                  下一月
+                  <!-- <img src="@/assets/logImages/arrow_tip.png"/> -->
+                </a>
             </div>
             <div class="contentBox">
               <ul>
@@ -30,7 +36,7 @@
                   </ul>
                 </div>
               </div>
-              <img @click="touchstart" :class="isopen?'opened':''" src="@/assets/logImages/log_downarrow@2x.png"/>
+              <!-- <img @click="touchstart" :class="isopen?'opened':''" src="@/assets/logImages/log_downarrow@2x.png"/> -->
             </div>
         </div>
     </div>  
@@ -299,6 +305,7 @@ export default {
   padding:.4rem .3rem 0;
   font-size:0;
   text-align: center;
+  /* 处理ios中子元素transform: rotateZ(180deg)异常问题 */
   perspective:800px;
 }
 ul {

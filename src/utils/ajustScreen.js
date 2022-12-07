@@ -15,7 +15,7 @@
   
         self.Html.setAttribute("style", "font-size:" + pp * 100 + "px");
       }
-      self.correctPx();
+      //self.correctPx();
     };
     self.correctPx = function () {
   

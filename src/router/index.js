@@ -10,7 +10,7 @@ const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'Da
 const DropLoad = r => require.ensure([], () => r(require('@/DropLoad.vue')), 'DropLoad')
 const Create = r => require.ensure([], () => r(require('@/Create.vue')), 'Create')
 // const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
-
+const Drag = r => require.ensure([], () => r(require('@/Drag.vue')), 'Drag')
 const instance = new Router({
   mode: 'hash',
   routes: [
@@ -66,7 +66,15 @@ const instance = new Router({
       //   }
       // ]
     },
-    
+    {
+      path: '/drag',
+      name: 'Drag',
+      component: Drag,
+      meta: {
+        title: 'Drag',
+        requireAuth: true
+      }
+    },
   ]
 })
 

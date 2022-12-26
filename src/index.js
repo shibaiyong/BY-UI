@@ -7,7 +7,7 @@ import Api from '@/utils/api.js'
 
 import ByCheckbox from '@/components/checkbox'
 import ByGestureLock from '@/components/gesturelock'
-import ByDialog from '@/components/dialog'
+import { $dialog } from '@/components/dialog'
 
 
 let by_component = [
@@ -24,7 +24,7 @@ const install = (Vue, opt={}) => {
 
   Vue.use(Api)
 
-  Vue.prototype.$showdialog = ByDialog
+  Vue.prototype.$showdialog = $dialog
 
 }
 

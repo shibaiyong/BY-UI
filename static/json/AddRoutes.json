@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/create1",
+    "name": "Create1",
+    "meta": {
+      "title": "Create1"
+    }
+  },
+
+  {
+    "path": "/create",
+    "name": "Create",
+    "meta": {
+      "title": "Create"
+    }
+  }
+]

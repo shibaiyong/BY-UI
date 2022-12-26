@@ -1,16 +1,20 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
-Vue.use(Router)
+import { getRouteList } from '../requestDataInterface'
+import store from '../vuex/store'
 
-//const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
+Vue.use(Router)
 
 const Test = r => require.ensure([], () => r(require('@/Test')), 'Test')
 const Test2 = r => require.ensure([], () => r(require('@/Test2')), 'Test2')
 const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'DatePicker')
 const DropLoad = r => require.ensure([], () => r(require('@/DropLoad.vue')), 'DropLoad')
-const Create = r => require.ensure([], () => r(require('@/Create.vue')), 'Create')
-// const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 const Drag = r => require.ensure([], () => r(require('@/Drag.vue')), 'Drag')
+
+
+let addRoutes = []
+
 const instance = new Router({
   mode: 'hash',
   routes: [
@@ -49,13 +53,7 @@ const instance = new Router({
     {
       path: '/dropload',
       name: 'DropLoad',
-      component: DropLoad,
-      // children:[
-      //   {
-      //     path: 'create',
-      //     component: Create,
-      //   }
-      // ]
+      component: DropLoad
     },
     {
       path: '/drag',
@@ -70,11 +68,33 @@ const instance = new Router({
 })
 
 
+let createRouteComponent = ( route ) => {
+
+  return () => import(`@/${ route }`)
+
+}
+
+
+function getRemoteRouteList(instance,next){
+
+  getRouteList().then( res => {
+
+    for(let i = 0; i < res.length; i++){
+      res[i].component = createRouteComponent(res[i].name)
+    }
+    //是否获取到权限列表标识设置，要在addRoutes动态添加路由之前
+    store.dispatch('setRolesList',true)
+    console.log(res)
+    instance.addRoutes(res)
+  })
+}
+
 instance.beforeEach((to, from, next) => {
   let _title = to.meta.title
   document.title = _title ? _title : '默认标题'
-  if (to.meta.requireAuth) {
-    next()
+
+  if(!store.state.routesListFlag){
+    getRemoteRouteList(instance, next)
   }
   next()
 })

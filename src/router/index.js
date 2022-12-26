@@ -12,6 +12,8 @@ const DatePicker = r => require.ensure([], () => r(require('@/DatePicker')), 'Da
 const DropLoad = r => require.ensure([], () => r(require('@/DropLoad.vue')), 'DropLoad')
 const Drag = r => require.ensure([], () => r(require('@/Drag.vue')), 'Drag')
 
+//路由懒加载
+//const CreateLog = () => import(/* webpackChunkName: "log" */ '@/productmeetlog/page/CreateLog.vue')
 
 let addRoutes = []
 

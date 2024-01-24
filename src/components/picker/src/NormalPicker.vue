@@ -36,7 +36,10 @@ export default {
       default: 3,
       type: [Number, String]
     },
-    defaultValDate:[Number, String]
+    defaultValDate:[Number, String],
+    cloumnKey:{
+      type: [Number, String]
+    }
   },
   data() {
     return {
@@ -53,7 +56,6 @@ export default {
     };
   },
   created() {
-    console.log(this.showRows)
     this.dataslen = this.cloumndatas instanceof Array ? this.cloumndatas.length : 0;
     this.pickerStyle = {
       height: this.itemHigh + "PX",
@@ -66,11 +68,9 @@ export default {
   methods: {
     calculateIndex(date) {
       if(date){
-        console.log(this.cloumndatas)
         //date未找到时，则展示默认选中项。
         //findIndex:对于空数组不执行，没找到时返回-1，找到后返回对应的索引并且后面的元素不再执行。
         this.currentInd = this.selectedInd = 1 + this.cloumndatas.findIndex(item => item.name == date);
-        console.log(this.currentInd)
       }else{
         this.currentInd = this.selectedInd = Math.ceil(this.showRows/2)
       }
@@ -78,7 +78,7 @@ export default {
       //设置当前列表的位置
       this.top = (Math.ceil(this.showRows / 2) - this.selectedInd) * 42
 
-      this.$emit("isselected", '2', this.cloumn, this.cloumndatas[this.selectedInd - 1])
+      this.$emit("isselected", '2', this.cloumnKey, this.cloumndatas[this.selectedInd - 1])
     },
     findByDefault() {
 
@@ -86,7 +86,7 @@ export default {
 
         this.top = this.itemHigh
         this.currentInd = this.selectedInd = 1
-        this.$emit("isselected", '2', this.cloumn, this.cloumndatas[this.selectedInd - 1])
+        this.$emit("isselected", '2', this.cloumnKey, this.cloumndatas[this.selectedInd - 1])
         return false
       }
       this.calculateIndex(this.defaultValDate)
@@ -133,7 +133,7 @@ export default {
       //设置当前列表的位置
       this.top = (Math.ceil(this.showRows / 2) - this.selectedInd) * 42;
 
-      this.$emit("isselected", '1', this.cloumn, this.cloumndatas[this.selectedInd - 1])
+      this.$emit("isselected", '1', this.cloumnKey, this.cloumndatas[this.selectedInd - 1])
     },
 
     rotateXX(i) {
@@ -142,7 +142,6 @@ export default {
   },
   watch: {
     cloumndatas(newVal) {
-      console.log("cloumndatas");
       this.dataslen = newVal.length;
       //特殊情况只有一条数据
       //this.findByDefault();
@@ -189,7 +188,7 @@ export default {
   z-index: 2;
   left: 0;
   top: 0;
-  transition: all 250ms linear;
+  transition: all 200ms linear;
 }
 .dateArea ul li {
   height: 42px;

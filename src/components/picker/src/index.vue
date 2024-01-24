@@ -8,8 +8,8 @@
 
     <ul class="pickerscontainer">
       <li id="bar"></li>
-      <li v-for="(item,index) in datasarray" :key="item.keyInd">
-        <Picker :cloumn="index" :showRows="item.showRows" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
+      <li v-for="(item,index) in datasarray" v-if="item.isShow">
+        <Picker :cloumn="index" :cloumnKey="item.keyName"  :key="item.keyInd" :showRows="item.showRows" :defaultValDate="item.defaultVal" :cloumndatas="item.cloumndatas" @isselected="selected"></Picker>
       </li>
     </ul>
     <slot name="bottomOperate" :cancel='pickercancel' :confirm="pickerconfirm"></slot>
@@ -49,7 +49,8 @@ export default {
   data() {
     return {
       arr:[],
-      canMove:true
+      canMove:true,
+      obj:{}
     };
   },
 
@@ -74,11 +75,26 @@ export default {
   
   methods: {
 
-    selected(type, index, obj){
-      
-      this.$set(this.arr, index, Object.assign({}, {index, type}, obj))
-      this.$emit('input', this.arr)
+    selected(type, cloumnKey, obj){
 
+      let keyName = this.datasarray.map((item)=>{
+        if(item.isShow){
+          return item.keyName
+        }
+        return null;
+      })
+      //取交集
+      let keyArr = Object.keys(this.obj)
+      for(var i = 0; i < keyArr.length; i++){
+        let i_item = keyArr[i];
+        
+        if(!keyName.includes(i_item)){
+          delete this.obj[i_item]
+        }
+      }
+      this.obj = {...this.obj,[cloumnKey]:obj.name}
+      this.$set(this.arr, 0, Object.assign({},this.obj, {type}, obj))
+      this.$emit('input', this.arr)
     },
 
     pickerconfirm(){
@@ -93,6 +109,15 @@ export default {
       for(let i in obj){
         this.$refs[i][0].calculateIndex(obj[i])
       }
+    }
+  },
+
+  watch:{
+    datasarray: {
+      handler(newVal){
+        console.log('监听数据',newVal)
+      },
+      deep:true
     }
   },
 

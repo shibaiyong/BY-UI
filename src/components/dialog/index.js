@@ -54,16 +54,21 @@ const $dialog = {
       Object.assign(this.customId[id], opts)
 
     }else{
-
+      //这里的判断实际上没有必要，因为vue挂载之后，挂载节点（.by-dialogContainer）会被删除。所以，挂载节点每次都会创建。
+      let dialogEleContainer = document.querySelector('.by-dialogContainer')
+      if(!dialogEleContainer){
+        let ele = document.createElement('div');
+        ele.className = 'by-dialogContainer';
+        document.body.appendChild(ele);
+      }
       this.customId[id] = new DialogConstructor({
-
-        el:document.createElement('div'),
+        //挂在方式有两种。一种是el；另一种是$mount
+        //el:document.querySelector('.by-dialogContainer')
+        //el:document.createElement('div'),
         propsData:opts
-  
-      })
-      document.body.appendChild(this.customId[id].$el)
+      }).$mount(document.querySelector('.by-dialogContainer'))
     }
-    //在这里可以直接修改props数据，？？？
+    //在这里可以直接修改props数据，？？？可以组件出入的属性和构造函数生成的属性不一样。
     this.customId[id].showed()
   },
 

@@ -109,7 +109,6 @@ export default {
     },
     touchmove(e) {
       this.$root.$emit("isMove", false);
-
       let locations = e.targetTouches[0];
       //手指滑动的距离
       this.distance = locations.pageY - this.pageY;
@@ -123,7 +122,7 @@ export default {
       }
     },
     touchend(e) {
-      this.$root.$emit("isMove", false);
+      this.$root.$emit("isMove", true);
       let duration = Date.now() - this.startTime;
       let distance = this.distance - this.momentumDistance;
       let momentumFlag = duration < DEFAULT_DURATION && Math.abs(distance) > MOMENTUM_DISTANCE;

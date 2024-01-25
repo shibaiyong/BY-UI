@@ -1,7 +1,6 @@
 <template>
 <div class="dateArea" :style="pickerStyle">
-  <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transition: currentDuration ? `all ${currentDuration}ms` : 'none'}" @transitionend="stopMomentum">
-  <!-- <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transition: `all 200ms`}" @transitionend="stopMomentum"> -->
+  <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transitionDuration: `${currentDuration}ms`,transitionProperty:currentDuration ? 'all' : 'none'}" @transitionend="stopMomentum">
     <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{}" :key="item.id">{{item[name]}}</li>
   </ul>
 
@@ -220,6 +219,7 @@ export default {
   z-index: 2;
   left: 0;
   top: 0;
+  transition-timing-function: cubic-bezier(.23,1,.68,1);
 }
 .dateArea ul li {
   height: 42px;

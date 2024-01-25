@@ -85,7 +85,8 @@ export default {
         cloumndatas: [
           { id: 1, name: "今年月度" },
           { id: 2, name: "今年累计" },
-          { id: 3, name: "以往年度" }
+          { id: 3, name: "以往年度" },
+          
         ]
       },
       {
@@ -110,7 +111,15 @@ export default {
           { id: 1, name: "2021" },
           { id: 2, name: "2019" },
           { id: 3, name: "2018" },
-          { id: 4, name: "2017" }
+          { id: 4, name: "2017" },
+          { id: 5, name: "2016" },
+          { id: 6, name: "2015" },
+          { id: 7, name: "2014" },
+          { id: 8, name: "2013" },
+          { id: 9, name: "2012" },
+          { id: 10, name: "2011" },
+          { id: 11, name: "2010" },
+          { id: 12, name: "2009" }
         ]
       }],
       autoReceiveVal: {},
@@ -232,7 +241,6 @@ export default {
       console.log(newVal);
     },
     autoReceiveVal(newVal) {
-      console.log(newVal);
       let flag = newVal && newVal.length;
       //可以根据对应的选项“今年月度/以往年度”设置对应的数据cloumndatas。定义一个方法实现对应数据的生成或查找
       for (var i = 0; i < this.pickerdatas.length; i++) {

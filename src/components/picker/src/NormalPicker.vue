@@ -1,16 +1,18 @@
 <template>
 <div class="dateArea" :style="pickerStyle">
 
-  <ul ref="years" :style="{top:top+'px'}">
-    <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{transform:rotateXX(index)}" :key="item.id">{{item[name]}}</li>
+  <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transition: currentDuration ? `all ${currentDuration}ms` : 'none'}" @transitionend="stopMomentum">
+    <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{}" :key="item.id">{{item[name]}}</li>
   </ul>
 
-  <div class="datemask" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
-  </div>
+  <div class="datemask" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend"></div>
 </div>
 </template>
 
 <script>
+const DEFAULT_TRANSITION = 200;
+const DEFAULT_DURATION = 300;
+const MOMENTUM_DISTANCE = 20;
 export default {
   name: "by-picker",
   props: {
@@ -52,7 +54,12 @@ export default {
       lockFlag: false,
       moveIndex: 0,
       currentInd: 2,
-      pickerStyle: {}
+      pickerStyle: {},
+      currentDuration:0,
+      startTime:0,
+      moveDuration:0,
+      duration:0,
+      momentumDistance:0
     };
   },
   created() {
@@ -94,10 +101,12 @@ export default {
     
     touchstart(e) {
       let locations = e.targetTouches[0];
-
-      this.parentoffsettop = this.$refs.years.offsetTop;
-
+      //this.parentoffsettop = this.$refs.years.offsetTop;
+      this.currentDuration = 0;
+      this.momentumDistance = 0;
+      this.parentoffsettop = this.top;
       this.pageY = locations.pageY;
+      this.startTime = Date.now(); 
     },
     touchmove(e) {
       this.$root.$emit("isMove", false);
@@ -107,18 +116,43 @@ export default {
       this.distance = locations.pageY - this.pageY;
       //设置当前列表的位置
       this.top = this.parentoffsettop + this.distance;
-      //计算第几项被选中
+      //判断是否要执行惯性滚动
+      let now = Date.now();
+      if(now - this.startTime > DEFAULT_DURATION){
+        this.startTime = Date.now();
+        this.momentumDistance = this.distance;
+      }
+    },
+    touchend(e) {
+      this.$root.$emit("isMove", false);
+      let duration = Date.now() - this.startTime;
+      let distance = this.distance - this.momentumDistance;
+      let momentumFlag = duration < DEFAULT_DURATION && Math.abs(distance) > MOMENTUM_DISTANCE;
+      if(momentumFlag){
+        this.momentum(distance,duration);
+        return false;
+      }
+      this.currentDuration = DEFAULT_TRANSITION;
+      this.updateCurrentIndex()
+    },
+    rotateXX(i) {
+      return `rotateX(${18 * (this.currentInd - i - 1)}deg)`;
+    },
+    momentum(distance,duration){
+      let speed = Math.abs(distance / duration);
+      let newDistance = speed / 0.003 * (distance < 0 ? -1 : 1);
+      this.distance = this.momentumDistance + newDistance;
+      this.currentDuration = 1000;
+      this.updateCurrentIndex();
+    },
+    updateCurrentIndex(){
       this.moveIndex = Math.round(Math.abs(this.distance) / 42);
-
       //手势移动的方向
       if (this.distance > 0) {
         this.currentInd = this.selectedInd - this.moveIndex;
       } else {
         this.currentInd = this.selectedInd + this.moveIndex;
       }
-    },
-    touchend(e) {
-      this.$root.$emit("isMove", false);
       //超出边界判断
       if (this.currentInd < 1) {
         this.selectedInd = 1;
@@ -129,15 +163,13 @@ export default {
       } else {
         this.selectedInd = this.currentInd;
       }
-
       //设置当前列表的位置
       this.top = (Math.ceil(this.showRows / 2) - this.selectedInd) * 42;
-
       this.$emit("isselected", '1', this.cloumnKey, this.cloumndatas[this.selectedInd - 1])
     },
-
-    rotateXX(i) {
-      return `rotateX(${18 * (this.currentInd - i - 1)}deg)`;
+    stopMomentum(){
+      console.log('过渡完成');
+      this.currentDuration = 0;
     }
   },
   watch: {
@@ -188,7 +220,6 @@ export default {
   z-index: 2;
   left: 0;
   top: 0;
-  transition: all 200ms linear;
 }
 .dateArea ul li {
   height: 42px;

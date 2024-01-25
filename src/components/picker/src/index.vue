@@ -63,10 +63,8 @@ export default {
   },
 
   mounted(){
-
     //防止在滑动日期选择组件的时候，整个页面也跟着滑动
     document.body.addEventListener('touchmove', e => {
-      console.log(this.canMove)
       if(!this.canMove){
         e.preventDefault()
       }

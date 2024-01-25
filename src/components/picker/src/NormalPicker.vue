@@ -1,7 +1,7 @@
 <template>
 <div class="dateArea" :style="pickerStyle">
-
   <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transition: currentDuration ? `all ${currentDuration}ms` : 'none'}" @transitionend="stopMomentum">
+  <!-- <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transition: `all 200ms`}" @transitionend="stopMomentum"> -->
     <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{}" :key="item.id">{{item[name]}}</li>
   </ul>
 

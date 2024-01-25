@@ -1,10 +1,10 @@
 <template>
-<div class="dateArea" :style="pickerStyle">
+<div class="dateArea" :style="pickerStyle" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
   <ul ref="years" :style="{transform: `translate3d(0, ${top}px, 0)`,transitionDuration: `${currentDuration}ms`,transitionProperty:currentDuration ? 'all' : 'none'}" @transitionend="stopMomentum">
-    <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{}" :key="item.id">{{item[name]}}</li>
+    <li v-for="(item,index) in cloumndatas" :class="{'active':item.id==selectedInd}" :style="{}" :key="item.id" @click="clickOptions">{{item[name]}}</li>
   </ul>
 
-  <div class="datemask" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend"></div>
+  <div class="datemask"></div>
 </div>
 </template>
 
@@ -58,7 +58,8 @@ export default {
       startTime:0,
       moveDuration:0,
       duration:0,
-      momentumDistance:0
+      momentumDistance:0,
+      ismove:false,//避免单击事件触发touchend计算选中索引
     };
   },
   created() {
@@ -97,7 +98,9 @@ export default {
       }
       this.calculateIndex(this.defaultValDate)
     },
-    
+    clickOptions(){
+      console.log('hihihihi')
+    },
     touchstart(e) {
       let locations = e.targetTouches[0];
       //this.parentoffsettop = this.$refs.years.offsetTop;
@@ -105,10 +108,12 @@ export default {
       this.momentumDistance = 0;
       this.parentoffsettop = this.top;
       this.pageY = locations.pageY;
-      this.startTime = Date.now(); 
+      this.startTime = Date.now();
+      this.ismove = false
     },
     touchmove(e) {
       this.$root.$emit("isMove", false);
+      this.ismove = true;
       let locations = e.targetTouches[0];
       //手指滑动的距离
       this.distance = locations.pageY - this.pageY;
@@ -123,6 +128,9 @@ export default {
     },
     touchend(e) {
       this.$root.$emit("isMove", true);
+      if(!this.ismove){
+        return false;
+      }
       let duration = Date.now() - this.startTime;
       let distance = this.distance - this.momentumDistance;
       let momentumFlag = duration < DEFAULT_DURATION && Math.abs(distance) > MOMENTUM_DISTANCE;
@@ -168,6 +176,7 @@ export default {
     stopMomentum(){
       console.log('过渡完成');
       this.currentDuration = 0;
+      this.ismove = false;
     }
   },
   watch: {
@@ -197,6 +206,7 @@ export default {
   width: 100%;
   top: 0;
   bottom: 0;
+  pointer-events: none;
   background: linear-gradient(
     to bottom,
     /* white 0%, */
